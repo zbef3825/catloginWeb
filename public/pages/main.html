@@ -1,0 +1,27 @@
+<div class="col-md-6">
+    <div class="form-group">
+        <label>User Name</label>
+        <input type="text" class="form-control" id="user-name-new" ng-model="userName" placeholder="User Name">
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="password-new" ng-model="passw1" placeholder="Password">
+    </div>
+        <div class="form-group">
+        <label>Re-type Password</label>
+        <input type="password" class="form-control" id="password-new-re" ng-model="passw2" placeholder="Password">
+    </div>
+    <button type="button" class="btn btn-primary btn-large btn-block" ng-disabled="error || incomplete">Create New User</button>  
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>User Name</label>
+        <input type="text" class="form-control" ng-model="usernameexist" placeholder="User Name">
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" ng-model="passwordexist" placeholder="Password">
+    </div>
+    <button type="button" class="btn btn-primary btn-large btn-block">Login</button>
+</div>
