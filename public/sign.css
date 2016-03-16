@@ -6,5 +6,23 @@ body {
 
 h1 {
     text-align: center;
-    margin-bottom: 10%;
+}
+
+#userInfo{
+    text-align: right;
+    font-style: italic;
+}
+
+#createDiv{
+    margin-top: 10%;
+}
+
+#loginDiv {
+    margin-top: 10%;
+}
+
+#widthheightSet {
+    max-width: 67%;
+    max-height: 59%;  
+    margin: 0 18%; 
 }
