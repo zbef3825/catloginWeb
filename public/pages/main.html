@@ -1,0 +1,35 @@
+<div class="col-md-6">
+    <div class="form-group" ng-class="classname">
+        <label>User Name</label>
+        <input type="text" class="form-control" id="user-name-new" ng-model="userName" placeholder="User Name">
+        <p ng-hide="hideID" class="help-block">{{helptext}}</p>
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="password-new" ng-model="passw1" placeholder="Password">
+    </div>
+        <div class="form-group" ng-class="pwsame">
+        <label>Re-type Password</label>
+        <input type="password" class="form-control" id="password-new-re" ng-model="passw2" placeholder="Password">
+        <p ng-hide="hidePW" class="help-block">{{helpPWtext}}</p>
+    </div>
+    <div class="form-group" ng-class="accountcreated">
+        <button type="button" class="btn btn-primary btn-large btn-block" ng-disabled="errorPW || errorID || incomplete" ng-click="onClick()">Create New User</button> 
+        <p ng-hide="hideConfirm" class="help-block">{{welcome}}</p> 
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>User Name</label>
+        <input type="text" class="form-control" ng-model="usernameexist" placeholder="User Name">
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" ng-model="passwordexist" placeholder="Password">
+    </div>
+    <div class="form-group" ng-class="successfulLog">
+        <button type="button" class="btn btn-primary btn-large btn-block" ng-disabled="incompleteLogin || disabled" ng-click="onClickLog()">Login</button>
+        <p ng-hide='hideLogin' class="help-block">User name or password is incorrect</p>
+    </div>
+</div>
