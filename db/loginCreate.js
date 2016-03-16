@@ -5,6 +5,13 @@ module.exports = function(req, res){
     
     var conString = process.env.DATABASE_URL || 'postgres://localhost:5432/logincats';
     
+    if(req.username == undefined || req.password == undefined){
+        return res.status(400).send({
+            date: moment().format("YYYYMMDD"),
+            success: false
+        })
+    }
+    
     var data = {
             username: req.username,
             password:  req.password,

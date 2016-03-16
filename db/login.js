@@ -21,13 +21,15 @@ module.exports = function (req, res) {
         });
         query.on('end', function () {
             if (result.length == 1 && result[0].username == req.username && result[0].password == req.password) {
+                done();
                 return res.status(200).send({
                     success: true,
                     date: moment().format('YYYYMMDD')
                 });
             }
             else {
-                return res.status(400).send({
+                done();
+                return res.status(200).send({
                     success: false,
                     date: moment().format('YYYYMMDD')
                 })

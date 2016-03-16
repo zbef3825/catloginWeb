@@ -8,8 +8,8 @@ var jsonParser = bodyParser.json();
 
 module.exports = function(app){
     
-    app.post('/api/idcheck', jsonParser, function(req, res){
-        idCheck(req.body, res);
+    app.get('/api/idcheck/', function(req, res){
+        idCheck(req.query.id, res);
     });
     
     app.post('/api/loginCreate', jsonParser, function(req, res){
