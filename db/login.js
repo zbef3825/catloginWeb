@@ -1,5 +1,6 @@
 var pg = require('pg');
 var moment = require('moment');
+var jwt = require('jsonwebtoken');
 
 module.exports = function (req, res) {
     var conString = process.env.DATABASE_URL || 'postgres://localhost:5432/logincats';
@@ -22,9 +23,11 @@ module.exports = function (req, res) {
         query.on('end', function () {
             if (result.length == 1 && result[0].username == req.username && result[0].password == req.password) {
                 done();
+                var Usertoken = jwt.sign({username: req.username, expiresIn: "10h"}, 'example')
                 return res.status(200).send({
                     success: true,
-                    date: moment().format('YYYYMMDD')
+                    date: moment().format('YYYYMMDD'),
+                    token: Usertoken
                 });
             }
             else {

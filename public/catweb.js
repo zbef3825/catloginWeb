@@ -1,18 +1,30 @@
-var catPage = angular.module('catPage',['ngRoute']);
+var catPage = angular.module('catPage',['ngRoute', 'angular-jwt']);
 
-catPage.config(function($routeProvider){
+catPage.config(function($routeProvider, $locationProvider, $httpProvider, jwtInterceptorProvider){
+    
+    jwtInterceptorProvider.tokenGetter = function(){
+        return localStorage.getItem('id_token');
+    }
+    
+    $httpProvider.interceptors.push('jwtInterceptor');
+    
     $routeProvider
     .when('/', {
         templateUrl: "pages/main.html",
         controller: 'mainController'
     })
-    .when('/logged', {
-        templateUrl: "pages/logged.html",
-        controller: "loggedController"
+    .when('/loggedOn', {
+        templateUrl: "pages/loggedOn.html",
+        controller: 'loggedController'
     })
+ 
+    // $locationProvider.html5Mode({
+    //     enabled: true,
+    //     requireBase: false
+    //     });
 });
 
-catPage.controller('mainController', ['$scope', '$http', '$location', function($scope, $http, $location){
+catPage.controller('mainController', ['$scope', '$http', '$window', "$location", function($scope, $http, $window, $location){
     //use username to check if that user name is valid
     $scope.userName = '';
     
@@ -108,10 +120,8 @@ catPage.controller('mainController', ['$scope', '$http', '$location', function($
             password: $scope.passwordexist
         }).success(function(data){
             if(data.success){
-                //$scope.successfulLog = 'has-success';
-                //$scope.welcomeLog = "Welcome back, " + $scope.usernameexist + "!";
-                //loads different webpage
-                $location.path('/logged');
+                $window.localStorage.id_token = data.token;
+                $location.path('/loggedOn');
             }
             else if(!data.success) {
                 $scope.hideLogin = false;
@@ -119,11 +129,12 @@ catPage.controller('mainController', ['$scope', '$http', '$location', function($
                 $scope.disabled = false;
             }
         })
-    }
-    
-    
+    } 
 }]);
 
-catPage.controller('loggedController', ['$scope', '$log', function($scope, $log){
-    
-}]);
+catPage.controller('loggedController', function($scope, $window, jwtHelper){
+    var token = $window.localStorage.getItem('id_token');
+    var payload = jwtHelper.decodeToken(token);
+    console.log(payload);
+    $scope.username = payload.username;
+});
