@@ -9,14 +9,14 @@ catPage.config(function($routeProvider, $locationProvider, $httpProvider, jwtInt
     $httpProvider.interceptors.push('jwtInterceptor');
     
     $routeProvider
-    .when('/', {
+    .when('/login', {
         templateUrl: "pages/main.html",
         controller: 'mainController',
         resolve: {
             factory: checkToken
         }
     })
-    .when('/loggedOn', {
+    .when('/', {
         templateUrl: "pages/loggedOn.html",
         controller: 'loggedController',
         resolve: {
@@ -27,6 +27,8 @@ catPage.config(function($routeProvider, $locationProvider, $httpProvider, jwtInt
 });
 
 catPage.controller('mainController', ['$scope', '$http', '$window', "$location", function($scope, $http, $window, $location){
+    var localHost = "https://pure-forest-39604.herokuapp.com/";
+    //var heroku = "https://pure-forest-39604.herokuapp.com/";
     //use username to check if that user name is valid
     $scope.userName = '';
     
@@ -52,7 +54,7 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
     });
     
     $scope.checkID = function() {
-        $http.get("https://pure-forest-39604.herokuapp.com/api/idcheck/", {
+        $http.get(localHost+"api/idcheck/", {
             params: {"id": $scope.userName}})
             .success(function(data){
             if(!data.success && $scope.userName.length == 0){
@@ -96,15 +98,28 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
     }
     
     $scope.onClick = function () {
-        $http.post("https://pure-forest-39604.herokuapp.com/api/loginCreate/", {
+        $http.post(localHost+"api/loginCreate/", {
             username: $scope.userName,
             password: $scope.passw1
         }).success(function (data) {
             if(data.success){
-                $scope.accountcreated = 'has-success';
-                $scope.welcome = "Welcome, " + $scope.userName + "!";
                 $scope.hideConfirm = false;
                 $scope.hidePW = true;
+                $http.post(localHost+"api/login/", {
+                    username: $scope.userName,
+                    password: $scope.passw1
+                    }).success(function(data){
+                        if(data.success){
+                            $window.localStorage.id_token = data.token;
+                            $location.path('/');
+                            }
+                        else if(!data.success) {
+                            
+                            $scope.hideLogin = false;
+                            $scope.successfulLog = 'has-error';
+                            $scope.disabled = false;
+                            }
+                        });
             }
         });
     }
@@ -117,39 +132,43 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
         $scope.successfulLog = ' ';
         $scope.hideLogin = true;
         $scope.disabled = true;
-        $http.post("https://pure-forest-39604.herokuapp.com/api/login/", {
+        $http.post(localHost+"api/login/", {
             username: $scope.usernameexist,
             password: $scope.passwordexist
         }).success(function(data){
             if(data.success){
                 $window.localStorage.id_token = data.token;
-                $location.path('/loggedOn');
+                $location.path('/');
             }
             else if(!data.success) {
                 $scope.hideLogin = false;
                 $scope.successfulLog = 'has-error';
                 $scope.disabled = false;
             }
-        })
+        });
     } 
 }]);
 
 catPage.controller('loggedController', function($scope, $window, $http, $location, jwtHelper, toHome){
+    var localHost = "https://pure-forest-39604.herokuapp.com/";
+    //var heroku = "https://pure-forest-39604.herokuapp.com/";
     $scope.date = 0;
     $scope.reportCommentHide = true;
     $scope.reportSent = true;
+    $scope.postButtonClicked = 0;
     
-    $http.get("https://pure-forest-39604.herokuapp.com/api/pets/one",{
+    $http.get(localHost+"api/pets/one",{
         //for future update... type should be changed
         params: {"type": 'cat', "date": $scope.date}})
         .success(function(doc){
             //console.log(doc);
             if(doc.success){
-                //console.log(doc);
+                console.log(doc);
                 $scope.idphoto = doc.data[0]._id;
                 $scope.date = doc.data[0].date;
                 $scope.address = doc.data[0].imglink;
                 $scope.like = doc.data[0].upvote;
+                $scope.photoComments = doc.data[0].photocomment;
             }
         });
     
@@ -167,7 +186,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
         $scope.sendDisabled = false;
         $scope.reportCommentHide = true;
         $scope.reportSent = true;
-        $http.get("https://pure-forest-39604.herokuapp.com/api/pets/one",{
+        $http.get(localHost+"api/pets/one",{
         //for future update... type should be changed
         params: {"type": 'cat', "date": $scope.date}})
         .success(function(doc){
@@ -178,13 +197,14 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
                 $scope.date = doc.data[0].date;
                 $scope.address = doc.data[0].imglink;
                 $scope.like = doc.data[0].upvote;
+                $scope.photoComments = doc.data[0].photocomment;
             }
         });
     }
     
     $scope.onLikeClick = function(){
         $scope.likeDisabled = true;
-        $http.post("https://pure-forest-39604.herokuapp.com/api/pets/upvote",{
+        $http.post(localHost+"api/pets/upvote",{
             date: $scope.date,
             imglink: $scope.address,
             upvote: $scope.like
@@ -201,7 +221,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
     
     $scope.onClickSend = function(){
         $scope.sendDisabled = true;
-        $http.post("https://pure-forest-39604.herokuapp.com/api/pets/report",{
+        $http.post(localHost+"api/pets/report",{
             _id: $scope.idphoto,
             comment: $scope.reportText
         }).success(function(data){
@@ -215,19 +235,40 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
     $scope.onClickLogout = function(){
         localStorage.removeItem('id_token');
         toHome();
-         
     } 
+    
+    $scope.onClickPhotoComment = function(){
+        $scope.photoComment = true;
+        $scope.photoComments.push({
+            content: $scope.commentText,
+            user: $scope.username
+        });
+        
+        $http.post(localHost+"api/pets/comment",{
+            _id: $scope.idphoto,
+            content: $scope.commentText,
+            user: $scope.username
+        }).success(function(data){
+            $scope.commentText = null;
+            $scope.photoComment = false;
+        })
+    }
+    
+    
+    
+    
+    
     
 });
 
 catPage.factory('toHome', function($location){
     return function(){
-        $location.path('/');
+        $location.path('/login');
     }
 });
 
 var checkToken = function($location){
     if(localStorage.getItem('id_token') == undefined || localStorage.getItem('id_token') == null){
-        $location.path('/');
+        $location.path('/login');
     }
 }
