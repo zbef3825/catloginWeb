@@ -132,9 +132,30 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
     } 
 }]);
 
-catPage.controller('loggedController', function($scope, $window, jwtHelper){
+catPage.controller('loggedController', function($scope, $window, $http, jwtHelper){
+    $scope.current = 0;
+    
     var token = $window.localStorage.getItem('id_token');
     var payload = jwtHelper.decodeToken(token);
     console.log(payload);
     $scope.username = payload.username;
+    
+    
+    
+    $scope.onNextClick = function(){
+        //console.log($scope.current);
+        $http.get("http://localhost:3000/api/pets/one",{
+            //for future update... type should be changed
+            params: {"type": 'cat', "date": $scope.current}})
+            .success(function(doc){
+                //console.log(doc);
+                if(doc.success){
+                    //console.log(doc);
+                    $scope.current = doc.data[0].date;
+                    $scope.address = doc.data[0].imglink;
+                    $scope.like = doc.data[0].upvote;
+                }
+            })
+    }
+    
 });

@@ -9,13 +9,13 @@
 
 <div class="col-md-10">
     <div class="col-md-2">
-        <button type="button" class="btn btn-success btn-large btn-block">Like ({{Upvote}})</button> 
-        <button type="button" class="btn btn-info btn-large btn-block">Next</button>
+        <button type="button" class="btn btn-success btn-large btn-block">Like ({{like}})</button> 
+        <button type="button" class="btn btn-info btn-large btn-block" ng-click="onNextClick()">Next</button>
         <button type="button" class="btn btn-warning btn-large btn-block">Report</button> 
     </div>
     
     <div class="col-md-10" id="imageSection">
-        <img src="http://i.imgur.com/o1zIKwV.jpg" class="img-rounded" id="widthheightSet">
+        <img ng-src="{{address}}" class="img-rounded" id="widthheightSet">
     </div>
 </div>
 <div class="col-md-2">
