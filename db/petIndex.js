@@ -2,6 +2,7 @@ var bodyParser = require('body-parser');
 var getPetOne = require('./getPetOne.js');
 var upvote = require('./upvote.js');
 var report = require('./report.js');
+var comment = require('./comment.js');
 
 var jsonParser = bodyParser.json();
 
@@ -11,6 +12,8 @@ module.exports = function (app) {
     app.get('/api/pets/one', function(req,res){
         //will determine what kind of pet they want to see
         //accepts current post and asks for next document
+        
+        //display comments as well
         getPetOne(req, req.query.type, req.query.date ,res);
     });
     
@@ -26,15 +29,21 @@ module.exports = function (app) {
         report(req, res);
     });
     
-    app.put('/api/pets/edit', jsonParser, function(req,res){
-        //for admin only
-        //gives power to admin to edit certain documents that represents incorrectly
+    app.post('/api/pets/comment', jsonParser, function(req,res){
+        //save comments per posts
+        comment(req, res);
+        
     });
     
-    app.delete('/api/pets/delete', jsonParser, function(req,res){
-        //for admin only
-        //gives power to admin to delete certain documents that requires delete
-    });
+    // app.put('/api/pets/edit', jsonParser, function(req,res){
+    //     //for admin only
+    //     //gives power to admin to edit certain documents that represents incorrectly
+    // });
+    
+    // app.delete('/api/pets/delete', jsonParser, function(req,res){
+    //     //for admin only
+    //     //gives power to admin to delete certain documents that requires delete
+    // });
     
     
     

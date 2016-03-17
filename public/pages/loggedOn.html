@@ -4,10 +4,10 @@
 <div class="col-md-10">
 </div>
 <div class="col-md-2">
-    <button type="button" class="btn btn-danger btn-large btn-block" ng-click="onClickLogout()">Log Out</button> 
+    <button type="button" class="btn btn-danger btn-large btn-block" ng-click="onClickLogout()">Log Out</button>
 </div>
 
-<div class="col-md-10">
+<div class="col-md-9">
     <div class="col-md-2">
         <button type="button" class="btn btn-success btn-large btn-block" ng-disabled="likeDisabled" ng-click="onLikeClick()">Like ({{like}})</button> 
         <button type="button" class="btn btn-info btn-large btn-block" ng-click="onNextClick()">Next</button>
@@ -25,5 +25,19 @@
         <img ng-src="{{address}}" class="img-rounded" id="widthheightSet">
     </div>
 </div>
-<div class="col-md-2">
+<div class="col-md-3">
+    <label>Comment</label>
+    
+    <table class="table">
+        <tr ng-repeat="photoComment in photoComments">
+            <td class="input-sm">
+                {{photoComment.content}}
+            </td>
+            <td class="input-sm">
+                <i>{{photoComment.user}}</i>
+            </td>
+        </tr> 
+    </table>
+    <textarea ng-model="commentText" class="form-control" rows="3" maxlength="50" placeholder="comment"></textarea>
+    <button type="button" class="btn btn-large btn-block" ng-click="onClickPhotoComment()" ng-disabled="photoComment">Post</button>
 </div>
