@@ -4,6 +4,8 @@ var expressJWT = require('express-jwt');
 
 var dbIndex = require('./db/dbindex.js');
 var dbConnect = require('./db/dbconnect.js');
+var mongodbConnect = require('./db/mongodbConnect.js');
+var petIndex = require('./db/petIndex.js');
 
 app = express();
 
@@ -15,5 +17,7 @@ app.use(expressJWT({secret: "example"}).unless({path: ['/', '/api/idcheck/', '/a
 dbConnect();
 
 dbIndex(app);
+petIndex(app);
+
 
 app.listen(PORT);
