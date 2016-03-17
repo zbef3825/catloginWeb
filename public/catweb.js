@@ -52,7 +52,7 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
     });
     
     $scope.checkID = function() {
-        $http.get("http://localhost:3000/api/idcheck/", {
+        $http.get("https://pure-forest-39604.herokuapp.com/api/idcheck/", {
             params: {"id": $scope.userName}})
             .success(function(data){
             if(!data.success && $scope.userName.length == 0){
@@ -96,7 +96,7 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
     }
     
     $scope.onClick = function () {
-        $http.post("http://localhost:3000/api/loginCreate/", {
+        $http.post("https://pure-forest-39604.herokuapp.com/api/loginCreate/", {
             username: $scope.userName,
             password: $scope.passw1
         }).success(function (data) {
@@ -117,7 +117,7 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
         $scope.successfulLog = ' ';
         $scope.hideLogin = true;
         $scope.disabled = true;
-        $http.post("http://localhost:3000/api/login/", {
+        $http.post("https://pure-forest-39604.herokuapp.com/api/login/", {
             username: $scope.usernameexist,
             password: $scope.passwordexist
         }).success(function(data){
@@ -139,7 +139,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
     $scope.reportCommentHide = true;
     $scope.reportSent = true;
     
-    $http.get("http://localhost:3000/api/pets/one",{
+    $http.get("https://pure-forest-39604.herokuapp.com/api/pets/one",{
         //for future update... type should be changed
         params: {"type": 'cat', "date": $scope.date}})
         .success(function(doc){
@@ -167,7 +167,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
         $scope.sendDisabled = false;
         $scope.reportCommentHide = true;
         $scope.reportSent = true;
-        $http.get("http://localhost:3000/api/pets/one",{
+        $http.get("https://pure-forest-39604.herokuapp.com/api/pets/one",{
         //for future update... type should be changed
         params: {"type": 'cat', "date": $scope.date}})
         .success(function(doc){
@@ -184,7 +184,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
     
     $scope.onLikeClick = function(){
         $scope.likeDisabled = true;
-        $http.post("http://localhost:3000/api/pets/upvote",{
+        $http.post("https://pure-forest-39604.herokuapp.com/api/pets/upvote",{
             date: $scope.date,
             imglink: $scope.address,
             upvote: $scope.like
@@ -201,7 +201,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
     
     $scope.onClickSend = function(){
         $scope.sendDisabled = true;
-        $http.post("http://localhost:3000/api/pets/report",{
+        $http.post("https://pure-forest-39604.herokuapp.com/api/pets/report",{
             _id: $scope.idphoto,
             comment: $scope.reportText
         }).success(function(data){
