@@ -4,14 +4,21 @@
 <div class="col-md-10">
 </div>
 <div class="col-md-2">
-    <button type="button" class="btn btn-danger btn-large btn-block">Log Out</button> 
+    <button type="button" class="btn btn-danger btn-large btn-block" ng-click="onClickLogout()">Log Out</button> 
 </div>
 
 <div class="col-md-10">
     <div class="col-md-2">
-        <button type="button" class="btn btn-success btn-large btn-block">Like ({{like}})</button> 
+        <button type="button" class="btn btn-success btn-large btn-block" ng-disabled="likeDisabled" ng-click="onLikeClick()">Like ({{like}})</button> 
         <button type="button" class="btn btn-info btn-large btn-block" ng-click="onNextClick()">Next</button>
-        <button type="button" class="btn btn-warning btn-large btn-block">Report</button> 
+        <button type="button" class="btn btn-warning btn-large btn-block" ng-click="onReportClick()">Report</button> 
+        <div ng-hide="reportCommentHide">
+            <input type='text' class='form-control input-sm' placeholder="Report Issues" ng-model="reportText">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="onClickSend()" ng-model="reportComment" ng-disabled="sendDisabled">Send</button>
+            </span>
+        </div>
+        <p class="has-success" ng-hide="reportSent">Report Sent</p>
     </div>
     
     <div class="col-md-10" id="imageSection">
