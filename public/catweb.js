@@ -267,8 +267,8 @@ catPage.factory('toHome', function($location){
     }
 });
 
-var checkToken = function($location){
-    if(localStorage.getItem('id_token') == undefined || localStorage.getItem('id_token') == null){
+var checkToken = function($location) {
+    if( localStorage.getItem('id_token') == undefined || localStorage.getItem('id_token') == null){
         $location.path('/login');
     }
 }
