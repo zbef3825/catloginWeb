@@ -13,13 +13,13 @@ module.exports = function(req,res){
             user: req.body.user,
             date: Number(moment().format("YYYYMMDDHHmmss"))
         }
-        console.log(newComment);
-        console.log(doc);
+        //console.log(newComment);
+        //console.log(doc);
         doc.photocomment.push(newComment);
-        console.log(doc.photocomment);
+        //console.log(doc.photocomment);
         //console.log(typeof doc.photocomment);
         petModel
-        .findOneAndUpdate(search, {$set:{"photocomment": doc.photocomment}}, {new: true})
+        .findOneAndUpdate(search, {$set:{"photocomment": doc.photocomment}, $inc:{"photocommentnum": 1}}, {new: true})
         .exec(function(err){
             if(err){
                 console.error(err);
