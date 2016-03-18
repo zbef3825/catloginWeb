@@ -31,7 +31,7 @@ catPage.config(function($routeProvider, $locationProvider, $httpProvider, jwtInt
 });
 
 catPage.controller('mainController', ['$scope', '$http', '$window', "$location", function($scope, $http, $window, $location){
-    var localHost = "http://localhost:3000/";
+    var localHost = "https://pure-forest-39604.herokuapp.com/";
     //var heroku = "https://pure-forest-39604.herokuapp.com/";
     
     //use username to check if that user name is valid
@@ -155,7 +155,7 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
 }]);
 
 catPage.controller('loggedController', function($scope, $window, $http, $location, jwtHelper, toHome, logOut){
-    var localHost = "http://localhost:3000/";
+    var localHost = "https://pure-forest-39604.herokuapp.com/";
     //var heroku = "https://pure-forest-39604.herokuapp.com/";
     $scope.date = 0;
     $scope.reportCommentHide = true;
@@ -265,7 +265,7 @@ catPage.controller("adminController", function($scope, $http, logOut){
         logOut();
     }
     
-    var localHost = "http://localhost:3000/";
+    var localHost = "https://pure-forest-39604.herokuapp.com/";
     //var heroku = "https://pure-forest-39604.herokuapp.com/";
     
     //get top 3 database(like)
