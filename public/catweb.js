@@ -293,8 +293,9 @@ catPage.controller("adminController", function($scope, $http, logOut){
         //console.log(doc);
         $scope.reportposts = doc.data;
     });
-    
+    //upload a photo
     $scope.onClickUpload = function(){
+        $scope.UploadDisbaled = true;
         //upload photo
         $http.post(localHost+"api/pets/photo",{
             data: {
@@ -303,6 +304,8 @@ catPage.controller("adminController", function($scope, $http, logOut){
             }
         })
         .success(function(doc){
+            $scope.UploadDisbaled = false;
+            $scope.uploadImage = null;
             //console.log(doc);
         });
         
@@ -311,6 +314,7 @@ catPage.controller("adminController", function($scope, $http, logOut){
     
     //delete photo
     $scope.onClickDelete = function(){
+        $scope.deleteDisabled = true;
         //console.log($scope.deleteImage);
         $http.delete(localHost+"api/pets/delete",{
             params: {
@@ -318,7 +322,9 @@ catPage.controller("adminController", function($scope, $http, logOut){
             }
         })
         .success(function(doc){
-           //console.log(doc); 
+            $scope.deleteDisabled = false;
+            $scope.deleteImage = null;
+            console.log(doc); 
         });
     }
     

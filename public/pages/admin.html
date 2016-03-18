@@ -103,14 +103,14 @@
         <h3>Upload Image</h3>
         <input type="text" class="form-control" ng-model="uploadImage" placeholder="Image link">
         <br>
-        <button type="button" class="btn btn-large btn-block" ng-click="onClickUpload()" >Upload</button>
+        <button type="button" class="btn btn-large btn-block" ng-click="onClickUpload()" ng-disabled="UploadDisbaled" >Upload</button>
     </div>
     
     <div class="col-md-12">
         <h3>Delete Image</h3>
         <input type="text" class="form-control" ng-model="deleteImage" placeholder="Image ID">
         <br>
-        <button type="button" class="btn btn-danger btn-large btn-block" ng-click="onClickDelete()">DELETE</button>
+        <button type="button" class="btn btn-danger btn-large btn-block" ng-click="onClickDelete()" ng-disabled="deleteDisabled">DELETE</button>
     </div>
     
     
