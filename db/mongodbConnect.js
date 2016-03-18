@@ -14,7 +14,8 @@ var petSchema = new Schema({
     reportcomment: [String],
     date: Number,
     pettype: String,
-    photocomment: [Schema.Types.Mixed]
+    photocomment: [Schema.Types.Mixed],
+    photocommentnum: Number
     });	
     
 var petModel = mongoose.model('pets', petSchema);

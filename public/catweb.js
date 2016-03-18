@@ -11,10 +11,7 @@ catPage.config(function($routeProvider, $locationProvider, $httpProvider, jwtInt
     $routeProvider
     .when('/login', {
         templateUrl: "pages/main.html",
-        controller: 'mainController',
-        resolve: {
-            factory: checkToken
-        }
+        controller: 'mainController'
     })
     .when('/', {
         templateUrl: "pages/loggedOn.html",
@@ -23,12 +20,20 @@ catPage.config(function($routeProvider, $locationProvider, $httpProvider, jwtInt
             factory: checkToken
         }
     })
+    .when('/admin', {
+        templateUrl: "pages/admin.html",
+        controller: 'adminController',
+        resolve: {
+            factory: checkToken
+        }
+    })
     .otherwise({ redirectTo:'/' });
 });
 
 catPage.controller('mainController', ['$scope', '$http', '$window', "$location", function($scope, $http, $window, $location){
-    var localHost = "https://pure-forest-39604.herokuapp.com/";
+    var localHost = "http://localhost:3000/";
     //var heroku = "https://pure-forest-39604.herokuapp.com/";
+    
     //use username to check if that user name is valid
     $scope.userName = '';
     
@@ -149,8 +154,8 @@ catPage.controller('mainController', ['$scope', '$http', '$window', "$location",
     } 
 }]);
 
-catPage.controller('loggedController', function($scope, $window, $http, $location, jwtHelper, toHome){
-    var localHost = "https://pure-forest-39604.herokuapp.com/";
+catPage.controller('loggedController', function($scope, $window, $http, $location, jwtHelper, toHome, logOut){
+    var localHost = "http://localhost:3000/";
     //var heroku = "https://pure-forest-39604.herokuapp.com/";
     $scope.date = 0;
     $scope.reportCommentHide = true;
@@ -163,7 +168,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
         .success(function(doc){
             //console.log(doc);
             if(doc.success){
-                console.log(doc);
+                //console.log(doc);
                 $scope.idphoto = doc.data[0]._id;
                 $scope.date = doc.data[0].date;
                 $scope.address = doc.data[0].imglink;
@@ -233,8 +238,7 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
     }
     
     $scope.onClickLogout = function(){
-        localStorage.removeItem('id_token');
-        toHome();
+        logOut();
     } 
     
     $scope.onClickPhotoComment = function(){
@@ -253,13 +257,75 @@ catPage.controller('loggedController', function($scope, $window, $http, $locatio
             $scope.photoComment = false;
         })
     }
+});
+
+catPage.controller("adminController", function($scope, $http, logOut){
+    
+    $scope.onClickLogout = function(){
+        logOut();
+    }
+    
+    var localHost = "http://localhost:3000/";
+    //var heroku = "https://pure-forest-39604.herokuapp.com/";
+    
+    //get top 3 database(like)
+    $http.get(localHost+"api/pets/toplike")
+    .success(function(doc){
+        if(doc.success){
+            //console.log(doc);
+           $scope.mostlikedposts = doc.data;
+        }
+    });
     
     
+    //get most discussed
+    $http.get(localHost+"api/pets/topdis")
+    .success(function(doc){
+        if(doc.success){
+            //console.log(doc);
+            $scope.mostdiscussedposts = doc.data;  
+        }
+    });
+    
+    //get all reports
+    $http.get(localHost+"api/pets/reportsAdmin")
+    .success(function(doc){
+        //console.log(doc);
+        $scope.reportposts = doc.data;
+    });
+    
+    $scope.onClickUpload = function(){
+        //upload photo
+        $http.post(localHost+"api/pets/photo",{
+            data: {
+                url: $scope.uploadImage,
+                type: 'cat'
+            }
+        })
+        .success(function(doc){
+            //console.log(doc);
+        });
+        
+    }
     
     
-    
+    //delete photo
+    $scope.onClickDelete = function(){
+        //console.log($scope.deleteImage);
+        $http.delete(localHost+"api/pets/delete",{
+            params: {
+                _id: $scope.deleteImage
+            }
+        })
+        .success(function(doc){
+           //console.log(doc); 
+        });
+    }
     
 });
+
+
+
 
 catPage.factory('toHome', function($location){
     return function(){
@@ -267,8 +333,28 @@ catPage.factory('toHome', function($location){
     }
 });
 
-var checkToken = function($location) {
-    if( localStorage.getItem('id_token') == undefined || localStorage.getItem('id_token') == null){
+catPage.factory('logOut', function($location, toHome){
+    return function(){
+        localStorage.removeItem('id_token');
+        toHome();        
+    };
+});
+
+var checkToken = function($location,$window, jwtHelper) {
+    
+    
+    if( $window.localStorage.getItem('id_token') == undefined || $window.localStorage.getItem('id_token') == null) {    
         $location.path('/login');
+    }
+    
+    var token = $window.localStorage.getItem('id_token');
+    var payload = jwtHelper.decodeToken(token);
+    
+    if (jwtHelper.isTokenExpired(token)){
+        $location.path('/login');
+    }
+    
+    if (payload.admin == "true"){
+        $location.path('/admin');
     }
 }
