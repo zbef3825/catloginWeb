@@ -10,7 +10,7 @@ module.exports = function () {
         }
         
         client
-        .query('CREATE TABLE IF NOT EXISTS logins(id SERIAL PRIMARY KEY, username VARCHAR(50) not null, password VARCHAR(50) not null, date int not null)');
+        .query('CREATE TABLE IF NOT EXISTS logins(id SERIAL PRIMARY KEY, username VARCHAR(50) not null, password VARCHAR(50) not null, date int not null, admin BOOLEAN not null)');
         done();
     });
 }

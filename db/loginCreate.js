@@ -15,7 +15,8 @@ module.exports = function(req, res){
     var data = {
             username: req.username,
             password:  req.password,
-            date: moment().format('YYYYMMDD')
+            date: moment().format('YYYYMMDD'),
+            admin: false
         }
     
     pg.connect(conString, function(err, client, done) {
@@ -27,7 +28,7 @@ module.exports = function(req, res){
             });
         }
         
-        var query = client.query("INSERT INTO logins(username, password, date) VALUES($1, $2, $3)", [data.username, data.password, data.date]);
+        var query = client.query("INSERT INTO logins(username, password, date, admin) VALUES($1, $2, $3, $4)", [data.username, data.password, data.date, data.admin]);
         
         query.on('end', function () {
             done();

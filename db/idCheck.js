@@ -20,6 +20,7 @@ module.exports = function (id, res) {
             result.push(row);
         });
         query.on('end', function () {
+            //console.log(result);
             if (!result.length) {
                 done();
                 return res.status(200).send({

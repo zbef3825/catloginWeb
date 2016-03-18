@@ -1,0 +1,124 @@
+<div class="col-md-12">
+    <p id="userInfo">Logged in as: Admin</p>
+</div>
+
+<div class="col-md-10">
+</div>
+<div class="col-md-2">
+    <button type="button" class="btn btn-danger btn-large btn-block" ng-click="onClickLogout()">Log Out</button>
+</div>
+
+<div class="col-md-10">
+    
+    <div class="col-md-12">
+        <h3>Most Liked</h3>
+        <table class="table">
+            <tr>
+                <td>
+                    <i>Image Link</i>
+                </td>
+                <td class="text-right">
+                    <i># of Like</i>
+                </td>    
+            </tr>
+            
+            <tr ng-repeat="mostlikedpost in mostlikedposts">
+                <td>
+                    {{mostlikedpost.imglink}}
+                </td>
+                
+                <td class="text-right">
+                    {{mostlikedpost.upvote}}
+                </td>
+            </tr>
+            
+            
+            
+        </table>
+    </div>
+    
+    <div class="col-md-12">
+        <h3>Most Discussed</h3>
+        <table class="table">
+            <tr>
+                <td>
+                    <i>Image Link</i>
+                </td>
+                <td class="text-right">
+                   <i># of Comments</i>
+                </td>    
+            </tr>
+            <tr ng-repeat="mostdiscussedpost in mostdiscussedposts">
+                <td>
+                    {{mostdiscussedpost.imglink}}
+                </td>
+                
+                <td class="text-right">
+                    {{mostdiscussedpost.photocommentnum}}
+                </td>
+            </tr>
+            
+            
+            
+            
+        </table>
+    </div>
+    
+    
+    <div class="col-md-12">
+        <div>
+            <h3>Reports</h3>
+            <table class="table">
+                <tr>
+                    <td>
+                        <i>Image ID</i>
+                    </td>
+                    <td class="text-center">
+                        <i>Image link</i>
+                    </td>
+                    <td class="text-right">
+                        <i>Report Messages</i>
+                    </td>
+                </tr>
+                
+                <tr ng-repeat="reportpost in reportposts">
+                    <td>
+                        {{reportpost._id}}
+                    </td>
+                    
+                    <td class="text-center">
+                            {{reportpost.imglink}}
+                    </td>
+                    
+                    <td class="text-right">
+                            {{reportpost.reportcomment}}
+                    </td>
+                </tr>
+                
+            </table>
+        </div>    
+    </div>
+    
+    <div class="col-md-12">
+        <h3>Upload Image</h3>
+        <input type="text" class="form-control" ng-model="uploadImage" placeholder="Image link">
+        <br>
+        <button type="button" class="btn btn-large btn-block" ng-click="onClickUpload()" >Upload</button>
+    </div>
+    
+    <div class="col-md-12">
+        <h3>Delete Image</h3>
+        <input type="text" class="form-control" ng-model="deleteImage" placeholder="Image ID">
+        <br>
+        <button type="button" class="btn btn-danger btn-large btn-block" ng-click="onClickDelete()">DELETE</button>
+    </div>
+    
+    
+    
+    
+    
+</div>
+
+
+<div class="col-md-2">
+</div>

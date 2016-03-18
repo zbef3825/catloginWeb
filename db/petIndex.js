@@ -3,6 +3,11 @@ var getPetOne = require('./getPetOne.js');
 var upvote = require('./upvote.js');
 var report = require('./report.js');
 var comment = require('./comment.js');
+var topLike = require('./topLike.js');
+var topDis  = require('./topDis.js');
+var reportsAdmin = require('./reportsAdmin.js');
+var photoUpload = require('./photoUpload.js');
+var photoDelete = require('./photoDelete.js');
 
 var jsonParser = bodyParser.json();
 
@@ -35,15 +40,27 @@ module.exports = function (app) {
         
     });
     
-    // app.put('/api/pets/edit', jsonParser, function(req,res){
-    //     //for admin only
-    //     //gives power to admin to edit certain documents that represents incorrectly
-    // });
+    app.get('/api/pets/toplike', function(req,res){
+        topLike(req, res);
+    });
     
-    // app.delete('/api/pets/delete', jsonParser, function(req,res){
-    //     //for admin only
-    //     //gives power to admin to delete certain documents that requires delete
-    // });
+    app.get('/api/pets/topdis', function(req,res){
+        topDis(req,res);
+    });
+    
+    app.get('/api/pets/reportsAdmin', function(req, res){
+        reportsAdmin(req, res);
+    });
+    
+    app.post('/api/pets/photo', jsonParser, function(req,res){
+        photoUpload(req, res);
+    })
+    
+    app.delete('/api/pets/delete', jsonParser, function(req,res){
+        //for admin only
+        //gives power to admin to delete certain documents that requires delete
+        photoDelete(req, res);
+    });
     
     
     
